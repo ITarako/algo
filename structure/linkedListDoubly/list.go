@@ -26,6 +26,9 @@ func (s *DoublyLinkedList) AddFirst(val int) {
 		s.Head = node
 	}
 
+	s.Head.Prev = s.Tail
+	s.Tail.Next = s.Head
+
 	s.Count++
 }
 
@@ -41,6 +44,9 @@ func (s *DoublyLinkedList) AddLast(val int) {
 		s.Tail = node
 	}
 
+	s.Head.Prev = s.Tail
+	s.Tail.Next = s.Head
+
 	s.Count++
 }
 
@@ -48,15 +54,16 @@ func (s *DoublyLinkedList) RemoveFirst() error {
 	if s.IsEmpty() {
 		return ErrDoublyLinkedListIsEmpty
 	}
-
-	s.Head = s.Head.Next
-
 	s.Count--
 
 	if s.IsEmpty() {
+		s.Head = nil
 		s.Tail = nil
 	} else {
-		s.Head.Prev = nil
+		s.Head = s.Head.Next
+
+		s.Head.Prev = s.Tail
+		s.Tail.Next = s.Head
 	}
 
 	return nil
@@ -73,8 +80,10 @@ func (s *DoublyLinkedList) RemoveLast() error {
 		s.Head = nil
 		s.Tail = nil
 	} else {
-		s.Tail.Prev.Next = nil
 		s.Tail = s.Tail.Prev
+
+		s.Head.Prev = s.Tail
+		s.Tail.Next = s.Head
 	}
 
 	return nil
