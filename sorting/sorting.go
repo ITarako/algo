@@ -1,36 +1,48 @@
 package sorting
 
-func BubbleSort(input []int) []int {
-	for partIndex := len(input) - 1; partIndex > 0; partIndex-- {
-		for i := 0; i < partIndex; i++ {
+func BubbleSort2(input []int) {
+	for i := 0; i < len(input); i++ {
+		ii := i
+		for j := 0; j < len(input); j++ {
+			if input[ii] > input[j] && ii < j {
+				swap(input, ii, j)
+				ii = j
+			}
+		}
+	}
+}
+
+func BubbleSort(input []int) {
+	for wall := len(input) - 1; wall > 0; wall-- {
+		for i := 0; i < wall; i++ {
 			if input[i] > input[i+1] {
 				swap(input, i, i+1)
 			}
 		}
 	}
-
-	return input
 }
 
-func SelectionSort(input []int) []int {
-	for partIndex := len(input) - 1; partIndex > 0; partIndex-- {
-		var largestAt = 0
-		for i := 1; i <= partIndex; i++ {
-			if input[i] > input[largestAt] {
-				largestAt = i
+func SelectionSort(input []int) {
+	for wall := len(input) - 1; wall > 0; wall-- {
+		largestIdx := 0
+		for i := 1; i <= wall; i++ {
+			if input[i] > input[largestIdx] {
+				largestIdx = i
 			}
 		}
-		swap(input, largestAt, partIndex)
-	}
 
-	return input
+		swap(input, largestIdx, wall)
+	}
 }
 
 func InsertionSort(input []int) {
-	for partIndex := 1; partIndex < len(input); partIndex++ {
-		curUnsorted := input[partIndex]
+	for wall := 1; wall < len(input); wall++ {
+		curUnsorted := input[wall]
 		var i int
-		for i = partIndex; i > 0 && input[i-1] > curUnsorted; i-- {
+		for i = wall; i > 0; i-- {
+			if curUnsorted >= input[i-1] {
+				break
+			}
 			input[i] = input[i-1]
 		}
 		input[i] = curUnsorted
@@ -38,7 +50,7 @@ func InsertionSort(input []int) {
 }
 
 func ShellSort(input []int) {
-	var gap int = 1
+	gap := 1
 	for gap < len(input)/3 {
 		gap = 3*gap + 1
 	}
@@ -59,7 +71,7 @@ func swap(input []int, i, j int) {
 		return
 	}
 
-	temp := input[i]
+	tmp := input[i]
 	input[i] = input[j]
-	input[j] = temp
+	input[j] = tmp
 }
