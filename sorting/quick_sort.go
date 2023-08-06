@@ -17,43 +17,34 @@ func (s quickSorter) sort(low, high int) {
 		return
 	}
 
-	j := s.partition(low, high)
+	pivot := s.partition(low, high)
 
-	s.sort(low, j-1)
-	s.sort(j+1, high)
+	s.sort(low, pivot-1)
+	s.sort(pivot+1, high)
 }
 
 func (s quickSorter) partition(low, high int) int {
+	//random := rand.Int()
+	//pivot := random%(high-low+1) + low
+	//swap(s.input, pivot, low)
+
+	pivot := low
 	i := low
-	j := high + 1
+	j := low
 
-	pivot := s.input[low]
+	pivotVal := s.input[low]
 
-	for {
-		i++
-		for s.input[i] < pivot {
-			if i == high {
-				break
-			}
+	for k := low + 1; k <= high; k++ {
+		if s.input[k] >= pivotVal {
+			j++
+		} else {
 			i++
+			swap(s.input, i, k)
+			j++
 		}
-
-		j--
-		for pivot < s.input[j] {
-			if j == low {
-				break
-			}
-			j--
-		}
-
-		if i >= j {
-			break
-		}
-
-		swap(s.input, i, j)
 	}
 
-	swap(s.input, low, j)
+	swap(s.input, pivot, i)
 
-	return j
+	return i
 }
